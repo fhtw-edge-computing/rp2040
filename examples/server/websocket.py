@@ -4,6 +4,8 @@ import usocket as socket
 import ustruct as struct
 import base64
 
+import uasyncio as asyncio
+
 from http import parse_request
 
 
@@ -33,7 +35,7 @@ def parse_websocket_request(request: dict):
     raise ValueError("WebSocket request does not contain key")
 
 
-def create_websocket_frame(data: bytes, opcode: int, fin=True) -> bytes:
+def create_websocket_frame(data: bytes, opcode: int, fin: bool = True) -> bytes:
     """
     Create a WebSocket frame for the given data and opcode
     """
@@ -65,15 +67,15 @@ def create_websocket_frame(data: bytes, opcode: int, fin=True) -> bytes:
     return frame_header + data
 
 
-def send_websocket_frame(sock: socket.SocketType, data: bytes, opcode: int):
+async def send_websocket_frame(writer: asyncio.StreamwWriter, data: bytes, opcode: int, fin: bool = True):
     """
-    Send a WebSocket frame over the ggivengivengivengivengivengiveniven socket
+    Send a WebSocket frame over the given socket
     """
-    frame = create_websocket_frame(data, opcode)
-    sock.sendall(frame)
+    frame = create_websocket_frame(data, opcode, fin)
+    await writer.awrite(frame)
 
 
-def receive_websocket_frame(sock: socket.SocketType):
+async def receive_websocket_frame(reader: asyncio.StreamReader):
     """
     Receive a WebSocket frame from the given socket
     Returns the data and the opcode of the frame
@@ -82,7 +84,7 @@ def receive_websocket_frame(sock: socket.SocketType):
     #   - the FIN flag (1 bit)
     #   - RSV1, RSV2, and RSV3 (1 bit each)
     #   - the Opcode (4 bits)
-    b1 = int.from_bytes(sock.recv(1), "big")
+    b1 = int.from_bytes(await reader.readexactly(1), "big")
     # print(f"Byte 1 - Received: {b1:b}")
 
     fin = bool(b1 & 0b10000000)
@@ -103,7 +105,7 @@ def receive_websocket_frame(sock: socket.SocketType):
     # The second byte of the frame is
     #     the MASK flag (1 bit)
     #     the Payload Length (7 bit)
-    b2 = int.from_bytes(sock.recv(1), "big")
+    b2 = int.from_bytes(await reader.readexactly(1), "big")
     # print(f"Byte 2 - Received: {b2:b}")
     mask = bool(b2 & 0b10000000)
     # print(f"MASK: {mask}")
@@ -112,24 +114,24 @@ def receive_websocket_frame(sock: socket.SocketType):
 
     # If the payload is less than 126 bytes, these two bytes encode the length directly
     if payload_length == 126:
-        payload_length_bytes = sock.recv(2)
+        payload_length_bytes = await reader.readexactly(2)
         payload_length, = struct.unpack("!H", payload_length_bytes)
     # If the payload is more than 126 bytes, these two bytes are set to 126 and the next 8 bytes are the length
     elif payload_length == 127:
-        payload_length_bytes = sock.recv(8)
+        payload_length_bytes = await reader.readexactly(8)
         payload_length, = struct.unpack("!Q", payload_length_bytes)
 
     if mask == 1:
-        masking_key = sock.recv(4)
+        masking_key = await reader.readexactly(4)
     else:
         masking_key = None
 
     # The rest of the frame is the payload, followed by any masking key if necessary
-    payload = sock.recv(payload_length)
+    payload = await reader.readexactly(payload_length)
     if masking_key:
         payload = mask_websocket_data(masking_key, payload)
 
-    return payload, opcode
+    return payload, opcode, fin
 
 
 def mask_websocket_data(masking_key: bytes, data: bytes) -> bytes:
@@ -145,51 +147,45 @@ def mask_websocket_data(masking_key: bytes, data: bytes) -> bytes:
     return masked_data
 
 
-def run_websocket_server(host: str, port: int):
-    sock = socket.socket()
-    sock.bind((host, port))
-    sock.listen(1)
+async def handle_client(reader, writer):
+    try:
+        # Perform the WebSocket handshake
+        req = await reader.read(1024)
+        request = parse_request(req)
+        key = parse_websocket_request(request)
+        print(f"Key: {key}")
+        response = create_websocket_handshake_response(key)
+        await writer.awrite(response)
+
+        # Echo messages back to the client
+        while True:
+            data, opcode, fin = await receive_websocket_frame(reader)
+            print(f"Opcode: {opcode}")
+            if opcode == 0x1:  # Text (utf-8)
+                print(f"Data received (Text): {data.decode('utf-8')}")
+            if opcode == 0x2:  # Binary Data
+                print(f"Data received (Text): {data}")
+            elif opcode == 0x8:  # Connection close
+                break
+            elif opcode == 0x9:  # Ping
+                print("Ping")
+            elif opcode == 0xa:  # Pong
+                print("Pong")
+            else:
+                print(f"Data received (Binary): {data}")
+
+            await send_websocket_frame(writer, data, opcode)
+    finally:
+        await writer.aclose()
+
+
+async def run_websocket_server(host: str, port: int):
+    """
+    Run a simple WebSocket server
+    """
+    # sock = socket.socket()
+    # sock.bind((host, port))
+    # sock.listen(1)
+    server = await asyncio.start_server(handle_client, host, port)
     print(f"Listening on {host}:{port}")
-    while True:
-        conn, addr = sock.accept()
-        print(f"Connect from {addr}")
-        try:
-            #req = conn.recv(1024).decode()
-            #print("\n== Received ==\n")
-            # print(req)
-
-            #request = parse_request(req)
-            #print("\n== Parse ==\n")
-            # print(request)
-
-            # Perform the WebSocket handshake
-            req = conn.recv(1024)
-            request = parse_request(req)
-            print("\n== Parse ==\n")
-            print(request)
-            key = parse_websocket_request(request)
-            print(f"Key: {key}")
-            response = create_websocket_handshake_response(key)
-            print("\n== Response ==\n")
-            print(response.decode('utf-8'))
-            conn.sendall(response)
-
-            # Echo messages back to the client
-            while True:
-                data, opcode = receive_websocket_frame(conn)
-                print(f"Opcode: {opcode}")
-                if opcode == 0x1:
-                    print(f"Data received (Text): {data.decode('utf-8')}")
-                elif opcode == 0x8:  # Connection close
-                    break
-                elif opcode == 0x9:  # Ping
-                    print("Ping")
-                elif opcode == 0xa:  # Pong
-                    print("Pong")
-                else:
-                    print(f"Data received (Binary): {data}")
-
-                send_websocket_frame(conn, data, opcode)
-
-        finally:
-            conn.close()
+    await server.wait_closed()

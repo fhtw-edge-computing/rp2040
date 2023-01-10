@@ -1,8 +1,16 @@
 from usys import argv
-from wifi import connect
+from uasyncio import run
 
+from wifi import connect
 from websocket import run_websocket_server
 
-if len(argv) == 2:
-    connect(argv[0], argv[1])
-    run_websocket_server("127.0.0.1", 8000)
+argv.append("<<ssid>>")
+argv.append("<<pwd>>")
+
+
+async def main():
+    if len(argv) == 2:
+        connect(argv[0], argv[1])
+        await run_websocket_server("127.0.0.1", 8000)
+
+run(main())
