@@ -168,13 +168,14 @@ async def handle_client(reader, writer):
             elif opcode == 0x8:  # Connection close
                 break
             elif opcode == 0x9:  # Ping
+                opcode = 0xa
                 print("Ping")
             elif opcode == 0xa:  # Pong
                 print("Pong")
             else:
                 print(f"Data received (Binary): {data}")
 
-            await send_websocket_frame(writer, data, opcode)
+            await send_websocket_frame(writer, data, opcode, fin)
     finally:
         await writer.aclose()
 
