@@ -184,9 +184,6 @@ async def run_websocket_server(host: str, port: int):
     """
     Run a simple WebSocket server
     """
-    # sock = socket.socket()
-    # sock.bind((host, port))
-    # sock.listen(1)
     server = await asyncio.start_server(handle_client, host, port)
     print(f"Listening on {host}:{port}")
     await server.wait_closed()
