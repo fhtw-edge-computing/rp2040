@@ -180,11 +180,14 @@ def run_websocket_server(host: str, port: int):
                 print(f"Opcode: {opcode}")
                 if opcode == 0x1:
                     print(f"Data received (Text): {data.decode('utf-8')}")
+                elif opcode == 0x8:  # Connection close
+                    break
+                elif opcode == 0x9:  # Ping
+                    print("Ping")
+                elif opcode == 0xa:  # Pong
+                    print("Pong")
                 else:
                     print(f"Data received (Binary): {data}")
-
-                if opcode == 8:  # Connection close
-                    break
 
                 send_websocket_frame(conn, data, opcode)
 
