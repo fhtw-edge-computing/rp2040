@@ -1,0 +1,10 @@
+{
+  "name": "rp2040",
+  "version": "1.0.0",
+  "description": "Project repository for Arduino RP2040 Connect",
+  "main": "null",
+  "repository": "https://github.com/fhtw-edge-computing/rp2040",
+  "author": "Alija Sabic <sabic.alija@gmail.com>",
+  "license": "GPL-3.0",
+  "private": true
+}
