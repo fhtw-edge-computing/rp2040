@@ -3,3 +3,4 @@
 ## Notes
 
 * https://pypi.org/project/micropython-async-websocket-client/
+* https://de.wikipedia.org/wiki/Captive_Portal

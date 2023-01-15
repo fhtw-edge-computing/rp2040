@@ -59,7 +59,13 @@ print(f"Wi-Fi connected {wlan.ifconfig()}")
 
 Here is the complete code:
 
+::: details
+
 <<< @/../projects/micropython/examples/wifi-station.py{python:line-numbers}
+
+:::
+
+For more details, please refer to the [Nano RP2040 Connect Python® API Guide](https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-python-api#wireless).
 
 ### Challenge
 
@@ -71,11 +77,78 @@ Here's the solution:
 
 <<< @/../projects/micropython/examples/wifi-station-retries.py{python:line-numbers}
 
-
 :::
 
 ## Wi-Fi Access Point
 
+This example shows how to create a Wi-Fi network with the specified __SSID__ and __password__.
+
+First, import the necessary modules, `AP_IF` and `WLAN`, from the `network` library.
+
+```python
+from network import AP_IF, WLAN
+```
+
+The code sets the SSID and password of the network in the variables ssid and pwd respectively. Then it sets the host IP address, subnet mask, gateway, and DNS server for the access point.
+
+```python
+# set SSID of the network
+ssid = "SSID"
+# set password of the network (must be 10 chars)
+pwd = "1234567890"
+
+# set the host IP address
+host = "192.168.1.1"
+# set the subnet mask
+subnetmask = "255.255.255.0"
+# set the gateway IP address
+gateway = host
+# set the DNS server IP address
+dns = "8.8.8.8"
+```
+
+Create an object of the `WLAN` class, which is used to control the Wi-Fi functionality of the device.
+Then, activate the Wi-Fi module by calling `ap.active(True)`.
+
+```python
+# create object of WLAN class
+ap = WLAN(AP_IF)
+# activate the Wi-Fi module
+ap.active(True)
+```
+
+The `ap.config()` function configures the access point using the specified `essid`, `key`, `security` and `channel` as arguments.
+In this case, the security is set to `WEP`, and the channel is set to `2`.
+
+```python
+# configure the Wi-Fi access point
+ap.config(essid=ssid, key=pwd, security=ap.WEP, channel=2)
+```
+
+Then, the ifconfig() method is used to configure the IP address, subnet mask, gateway, and DNS server.
+
+```python
+# configure the IP address, subnet mask, gateway and DNS server
+ap.ifconfig((host, subnetmask, gateway, dns))
+```
+
+Finally, the code prints the **SSID** and the **interface configuration** of the access point.
+
+```python
+print(f"AP mode started. SSID: {ssid}")
+print(f"> IP: {ap.ifconfig()[0]}, Subnet: {ap.ifconfig()[1]}")
+print(f"> Gateway: {ap.ifconfig()[2]}")
+print(f"> DNS: {ap.ifconfig()[3]}")
+```
+
+It is worth noting that, WEP security type is considered weak and it is not recommended to use it as it has been broken long time ago. It is preferable to use WPA2 or WPA3 for security purposes.
+
 Here is the complete code:
 
+::: details
+
 <<< @/../projects/micropython/examples/wifi-access-point.py{python:line-numbers}
+
+:::
+
+For more details, please refer to the [Nano RP2040 Connect Python® API Guide](https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-python-api#wi-fi-ap-mode).
