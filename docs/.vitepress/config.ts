@@ -12,14 +12,16 @@ export default defineConfig({
 
   head: [["meta", { name: "theme-color", content: "#3c8772" }]],
 
+  // markdown: {
+  //   lineNumbers: true
+  // },
+
   themeConfig: {
     logo: "/img/fhtw-logo.svg",
-    // siteTitle: "FH Technikum Wien: Edge Computing - Arduino Nano RP2040 Connect",
-    // siteTitle: "FH Technikum Wien: Edge Computing",
     siteTitle: "Arduino RP2040",
     nav: nav(),
     sidebar: {
-      "/guide/": sidebarGuide(),
+      // "/guide/": sidebarGuide(),
       "/c/": sidebarC(),
       "/micropython/": sidebarMicroPython(),
     },
@@ -57,8 +59,8 @@ function sidebarGuide() {
   return [
     {
       text: "Introduction",
-      collapsable: true,
-      items: [{ text: "Introduction", link: "/c/introduction" }],
+      collapsible: true,
+      items: [{ text: "Introduction", link: "/guide/introduction" }],
     },
   ];
 }
@@ -67,8 +69,8 @@ function sidebarC() {
   return [
     {
       text: "Introduction",
-      collapsable: true,
-      items: [{ text: "Installation", link: "/micropython/installation" }],
+      collapsible: true,
+      items: [{ text: "Installation", link: "/c/installation" }, { text: "Hello World", link: "/c/hello-world" }],
     },
   ];
 }
@@ -77,8 +79,23 @@ function sidebarMicroPython() {
   return [
     {
       text: "Introduction",
-      collapsable: true,
-      items: [{ text: "Installation", link: "/micropython/installation" }],
+      collapsible: true,
+      items: [{ text: "Installation", link: "/micropython/installation" }, { text: "Hello World", link: "/micropython/hello-world" }],
     },
+    {
+      text: "Networking",
+      collapsible: true,
+      items: [{ text: "Wi-Fi", link: "/micropython/wifi" }, { text: "Socket", link: "/micropython/socket" }, { text: "WebSocket", link: "/micropython/websocket" }, { text: "HTTP", link: "/micropython/http" }],
+    },
+    {
+      text: "Sensors",
+      collapsible: true,
+      items: [{ text: "IMU", link: "/micropython/imu" }, { text: "Microphone", link: "/micropython/microphone" }],
+    },
+    {
+      text: "Actuator",
+      collapsible: true,
+      items: [{ text: "RGB", link: "/micropython/rgb" }],
+    }
   ];
 }
