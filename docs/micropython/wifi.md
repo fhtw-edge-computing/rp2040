@@ -81,6 +81,12 @@ Here's the solution:
 
 ## Wi-Fi Access Point
 
+::: warning FIXME: `dns` apparently not set.
+
+:construction: Website is currently under construction :construction:
+
+:::
+
 This example shows how to create a Wi-Fi network with the specified __SSID__ and __password__.
 
 First, import the necessary modules, `AP_IF` and `WLAN`, from the `network` library.
