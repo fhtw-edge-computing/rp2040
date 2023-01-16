@@ -18,3 +18,37 @@
   --vp-button-brand-bg: var(--fhtw-blue);
   --vp-home-hero-name-color: var(--fhtw-green);
 }
+
+/* Figures */
+figure {
+  border: 1px solid var(--fhtw-blue-dark);
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  box-shadow: 0px 1px 2px 0px var(--fhtw-blue-dark);
+}
+
+figure img {
+  margin-bottom: 0.5rem;
+}
+
+figure figcaption {
+  padding: 0.25rem;
+  /* padding-top: 0.5rem; */
+  /* border: 2px solid var(--fhtw-blue-light);; */
+  border-top: 2px solid var(--fhtw-blue-dark);
+  padding-left: 1rem;
+  padding-bottom: 0rem;
+  width: calc(100% + 1rem);
+  margin-left: -0.5rem;
+  margin-top: 0.25rem;
+}
+
+.content.presentation {
+  background-color: var(--vp-c-bg);
+  overflow-y: scroll;
+}
+
+.content.presentation .content-container {
+  padding: 4rem;
+  max-width: unset !important;
+}
