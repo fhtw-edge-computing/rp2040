@@ -18,6 +18,11 @@ export default defineConfig({
   markdown: markdown(),
 
   themeConfig: {
+    algolia: {
+      appId: '2HWG3F9Q0X',
+      apiKey: '8a0075d717792b877e53c2bfee9871b7',
+      indexName: 'rp2040'
+    },
     logo: "/img/fhtw-logo.svg",
     siteTitle: "Arduino RP2040",
     nav: nav(),
@@ -74,6 +79,7 @@ function sidebarGuide() {
       items: [
         { text: "Overview", link: "/guide/overview" },
         { text: "Features", link: "/guide/features" },
+        { text: "Pinout", link: "/guide/pinout" },
         { text: "Resources", link: "/guide/resources" },
         // { text: "Tutorials", link: "/guide/tutorials" }
       ],
