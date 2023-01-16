@@ -8,6 +8,8 @@
   "license": "GPL-3.0",
   "private": true,
   "devDependencies": {
+    "markdown-it-figure-references": "^2.1.0-alpha.3",
+    "markdown-it-references": "^2.1.0-alpha.3",
     "vitepress": "^1.0.0-alpha.36",
     "vue": "^3.2.45"
   },

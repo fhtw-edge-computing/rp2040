@@ -1,5 +1,8 @@
 import { defineConfig } from "vitepress";
 
+import markdownItReferences from "markdown-it-references";
+import markdownItFigureReference from "markdown-it-figure-references";
+
 export default defineConfig({
   lang: "en-US",
   title: "Arduino Nano RP2040 Connect",
@@ -12,16 +15,14 @@ export default defineConfig({
 
   head: [["meta", { name: "theme-color", content: "#3c8772" }]],
 
-  // markdown: {
-  //   lineNumbers: true
-  // },
+  markdown: markdown(),
 
   themeConfig: {
     logo: "/img/fhtw-logo.svg",
     siteTitle: "Arduino RP2040",
     nav: nav(),
     sidebar: {
-      // "/guide/": sidebarGuide(),
+      "/guide/": sidebarGuide(),
       "/c/": sidebarC(),
       "/micropython/": sidebarMicroPython(),
     },
@@ -38,11 +39,21 @@ export default defineConfig({
   },
 });
 
+function markdown() {
+  return {
+    // lineNumbers: true
+    config: (md) => {
+      md.use(markdownItFigureReference, { anchor: { enable: false}, list: { enable: false } });
+      md.use(markdownItReferences);
+    }
+  }
+}
+
 function nav() {
   return [
     {
       text: "Guide",
-      link: "/guide/introduction",
+      link: "/guide/overview",
     },
     {
       text: "C/C++",
@@ -58,9 +69,22 @@ function nav() {
 function sidebarGuide() {
   return [
     {
-      text: "Introduction",
+      text: "Guide",
       collapsible: true,
-      items: [{ text: "Introduction", link: "/guide/introduction" }],
+      items: [
+        { text: "Overview", link: "/guide/overview" },
+        { text: "Features", link: "/guide/features" },
+        { text: "Resources", link: "/guide/resources" },
+        // { text: "Tutorials", link: "/guide/tutorials" }
+      ],
+    },
+    {
+      text: "About Us",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        { text: "Team", link: "/team" }
+      ],
     },
   ];
 }
@@ -70,7 +94,10 @@ function sidebarC() {
     {
       text: "Introduction",
       collapsible: true,
-      items: [{ text: "Installation", link: "/c/installation" }, { text: "Hello World", link: "/c/hello-world" }],
+      items: [
+        { text: "Installation", link: "/c/installation" },
+        { text: "Hello World", link: "/c/hello-world" }
+      ],
     },
   ];
 }
@@ -80,22 +107,35 @@ function sidebarMicroPython() {
     {
       text: "Introduction",
       collapsible: true,
-      items: [{ text: "Installation", link: "/micropython/installation" }, { text: "Hello World", link: "/micropython/hello-world" }],
+      items: [
+        { text: "Installation", link: "/micropython/installation" },
+        { text: "Hello World", link: "/micropython/hello-world" }
+      ],
     },
     {
       text: "Networking",
       collapsible: true,
-      items: [{ text: "Wi-Fi", link: "/micropython/wifi" }, { text: "Socket", link: "/micropython/socket" }, { text: "WebSocket", link: "/micropython/websocket" }, { text: "HTTP", link: "/micropython/http" }],
+      items: [
+        { text: "Wi-Fi", link: "/micropython/wifi" },
+        { text: "Socket", link: "/micropython/socket" },
+        { text: "WebSocket", link: "/micropython/websocket" },
+        { text: "HTTP", link: "/micropython/http" }
+      ],
     },
     {
       text: "Sensors",
       collapsible: true,
-      items: [{ text: "IMU", link: "/micropython/imu" }, { text: "Microphone", link: "/micropython/microphone" }],
+      items: [
+        { text: "IMU", link: "/micropython/imu" },
+        { text: "Microphone", link: "/micropython/microphone" }
+      ],
     },
     {
       text: "Actuator",
       collapsible: true,
-      items: [{ text: "RGB", link: "/micropython/rgb" }],
+      items: [
+        { text: "RGB", link: "/micropython/rgb" }
+      ],
     }
   ];
 }
