@@ -19,6 +19,15 @@
   --vp-home-hero-name-color: var(--fhtw-green);
 }
 
+.medium-zoom-overlay {
+  z-index: 20;
+}
+
+.medium-zoom-image {
+  z-index: 21;
+  padding: 0.5rem;
+}
+
 /* Figures */
 figure {
   border: 1px solid var(--fhtw-blue-dark);
@@ -29,6 +38,7 @@ figure {
 
 figure img {
   margin-bottom: 0.5rem;
+  margin: auto;
 }
 
 figure figcaption {
