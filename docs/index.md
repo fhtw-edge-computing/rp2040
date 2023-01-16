@@ -11,7 +11,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/introduction
+      link: /guide/overview
     - theme: alt
       text: View on GitHub
       link: https://github.com/fhtw-edge-computing/rp2040
