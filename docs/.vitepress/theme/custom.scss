@@ -56,9 +56,51 @@ figure figcaption {
 .content.presentation {
   background-color: var(--vp-c-bg);
   overflow-y: scroll;
+
+  & .content-container {
+    padding: 4rem;
+    max-width: unset !important;
+    /* font-size: larger; */
+    /* font-size: 250%; */
+    // font-size: 4rem;
+    /* font-size: larger; */
+    /* line-height: 4rem; */
+    $zoom: 250%;
+    font-size: $zoom;
+
+    & details summary {
+      font-size: $zoom;
+      line-height: calc(28px * $zoom/100%);
+    }
+
+    & details div.line-numbers-mode {
+      padding-left: calc(32px * $zoom/100%);
+    }
+
+    & details div .line-numbers-wrapper {
+      width: calc(32px * $zoom/100%);
+    }
+    
+    &, p {
+      line-height: calc(28px * $zoom/100%);
+    }
+
+    img {
+      width: 75%;
+    }
+
+    ul {
+      padding-left: calc(1.25rem * ($zoom/100%));
+    }
+
+    &
+      h1, h2, h3, h4, h5, h6 {
+        font-size: $zoom;
+        line-height: $zoom;
+      }
+  }
 }
 
-.content.presentation .content-container {
-  padding: 4rem;
-  max-width: unset !important;
-}
+// .content.presentation .content-container h1 {
+//   font-size: 4rem;
+// }
