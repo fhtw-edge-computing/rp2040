@@ -11,6 +11,7 @@
     "markdown-it-figure-references": "^2.1.0-alpha.3",
     "markdown-it-references": "^2.1.0-alpha.3",
     "medium-zoom": "^1.0.8",
+    "sass": "^1.57.1",
     "vitepress": "^1.0.0-alpha.36",
     "vue": "^3.2.45"
   },
