@@ -5,7 +5,10 @@ To connect your Arduino Nano RP2040 Connect to a WiFi network, you have two opti
 * Station
 * Access Point
 
-## Wi-Fi Station
+![Station/Access Point mode](/img/wifi.svg "wifi#Station/Access Point mode")
+
+
+## Station
 
 This example shows how to connect to a Wi-Fi network with the specified __SSID__ and __password__.
 
@@ -57,9 +60,7 @@ print(f"{ssid} connection succeeded!")
 print(f"Wi-Fi connected {wlan.ifconfig()}")
 ```
 
-Here is the complete code:
-
-::: details
+::: details Click me to view the complete code
 
 <<< @/../projects/micropython/examples/wifi-station.py{python:line-numbers}
 
@@ -71,15 +72,13 @@ For more details, please refer to the [Nano RP2040 Connect Python® API Guide](h
 
 Change the code to allow for several retries to connect to a Wi-Fi network before giving up.
 
-Here's the solution:
-
-::: details
+::: details Click me to view the complete solution
 
 <<< @/../projects/micropython/examples/wifi-station-retries.py{python:line-numbers}
 
 :::
 
-## Wi-Fi Access Point
+## Access Point
 
 ::: warning FIXME: `dns` apparently not set.
 
@@ -149,9 +148,7 @@ print(f"> DNS: {ap.ifconfig()[3]}")
 
 It is worth noting that, WEP security type is considered weak and it is not recommended to use it as it has been broken long time ago. It is preferable to use WPA2 or WPA3 for security purposes.
 
-Here is the complete code:
-
-::: details
+::: details Click me to view the complete code
 
 <<< @/../projects/micropython/examples/wifi-access-point.py{python:line-numbers}
 
