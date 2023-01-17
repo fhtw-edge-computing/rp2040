@@ -4,6 +4,7 @@
 
 ## Useful Links
 
+* [SVG Repo](https://www.svgrepo.com/)
 * Arduino
   * [ArduinoCloud](https://create.arduino.cc/)
   * [ArduinoIoTCloud](https://github.com/arduino-libraries/ArduinoIoTCloud)
