@@ -1,10 +1,33 @@
 # Arduino RP2040 Connect
 
+## Documentation
+
+### Algolia
+
+To update the search index of algolia run following command:
+
+```bash
+docker run -it --env-file=.env -e "CONFIG=$(cat ./docs/.vitepress/config/algolia.json | jq -r tostring)" algolia/docsearch-scraper
+```
+
+To run this command, you need following tools installed: `docker`, `jq`.
+Additionally, create a file `.env` and specify following variables:
+
+```bash
+APPLICATION_ID=<APP_ID>
+API_KEY=<API_KEY>
+```
+
 ## Examples
 
 ## Useful Links
 
 * [SVG Repo](https://www.svgrepo.com/)
+* Algolia
+  * [DocSearch configurations](https://github.com/algolia/docsearch-configs)
+  * [Run your own](https://docsearch.algolia.com/docs/legacy/run-your-own)
+  * [DocSearch scraper](https://github.com/algolia/docsearch-scraper)
+  * [Vitepress template](https://docsearch.algolia.com/docs/templates#vitepress-template)
 * Arduino
   * [ArduinoCloud](https://create.arduino.cc/)
   * [ArduinoIoTCloud](https://github.com/arduino-libraries/ArduinoIoTCloud)
