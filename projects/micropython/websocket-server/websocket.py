@@ -1,5 +1,4 @@
 import uhashlib as hashlib
-import usocket as socket
 
 import ustruct as struct
 import base64
@@ -7,6 +6,8 @@ import base64
 import uasyncio as asyncio
 
 from http import parse_request
+
+clients = []
 
 
 def create_websocket_handshake_response(key: str) -> bytes:
@@ -148,6 +149,7 @@ def mask_websocket_data(masking_key: bytes, data: bytes) -> bytes:
 
 
 async def handle_client(reader, writer):
+    clients.append(writer)
     try:
         # Perform the WebSocket handshake
         req = await reader.read(1024)
@@ -160,10 +162,9 @@ async def handle_client(reader, writer):
         # Echo messages back to the client
         while True:
             data, opcode, fin = await receive_websocket_frame(reader)
-            print(f"Opcode: {opcode}")
             if opcode == 0x1:  # Text (utf-8)
                 print(f"Data received (Text): {data.decode('utf-8')}")
-            if opcode == 0x2:  # Binary Data
+            elif opcode == 0x2:  # Binary Data
                 print(f"Data received (Text): {data}")
             elif opcode == 0x8:  # Connection close
                 break
@@ -173,10 +174,12 @@ async def handle_client(reader, writer):
             elif opcode == 0xa:  # Pong
                 print("Pong")
             else:
-                print(f"Data received (Binary): {data}")
+                print(f"Unhandled opcode: {opcode}")
 
-            await send_websocket_frame(writer, data, opcode, fin)
+            for client in clients:
+                await send_websocket_frame(client, data, opcode, fin)
     finally:
+        clients.remove(writer)
         await writer.aclose()
 
 
