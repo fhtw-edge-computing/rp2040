@@ -4,7 +4,7 @@ import Layout from "./components/Layout.vue";
 import { onMounted } from "vue";
 import mediumZoom from "medium-zoom";
 
-import "./custom.css";
+import "./custom.scss";
 
 export default {
   ...DefaultTheme,
