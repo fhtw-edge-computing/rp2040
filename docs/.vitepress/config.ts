@@ -19,8 +19,8 @@ export default defineConfig({
 
   themeConfig: {
     algolia: {
-      appId: '2HWG3F9Q0X',
-      apiKey: '8a0075d717792b877e53c2bfee9871b7',
+      appId: 'FTIZGAXGIC',
+      apiKey: '38fc2050d8ddf15ae736b1dffb4238f1',
       indexName: 'rp2040',
       disableUserPersonalization: true
     },
