@@ -11,7 +11,6 @@ export default {
   Layout: Layout,
   setup() {
     onMounted(() => {
-      // mediumZoom("[data-zoomable]", { background: "var(--vp-c-bg)" });
       mediumZoom(".VPDoc img", { background: "var(--vp-c-bg)" });
     });
   },
