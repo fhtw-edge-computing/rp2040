@@ -1,6 +1,7 @@
 <template>
   <div class="presenter" @click="onClick" v-show="hasContent">
     <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+      <title>Open Presentation</title>
       <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
       <path :d="icon" />
     </svg>
