@@ -18,12 +18,12 @@ export default defineConfig({
   markdown: markdown(),
 
   themeConfig: {
-    // algolia: {
-    //   appId: '2HWG3F9Q0X',
-    //   apiKey: '8a0075d717792b877e53c2bfee9871b7',
-    //   indexName: 'rp2040',
-    //   disableUserPersonalization: true
-    // },
+    algolia: {
+      appId: '2HWG3F9Q0X',
+      apiKey: '8a0075d717792b877e53c2bfee9871b7',
+      indexName: 'rp2040',
+      disableUserPersonalization: true
+    },
     logo: "/img/fhtw-logo.svg",
     siteTitle: "Arduino RP2040",
     nav: nav(),
@@ -49,7 +49,7 @@ function markdown() {
   return {
     // lineNumbers: true
     config: (md) => {
-      md.use(markdownItFigureReference, { anchor: { enable: false}, list: { enable: false } });
+      md.use(markdownItFigureReference, { anchor: { enable: false }, list: { enable: false } });
       md.use(markdownItReferences);
     }
   }
