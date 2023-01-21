@@ -1,5 +1,5 @@
 from network import STA_IF, WLAN
-from umachine import idle
+from machine import idle
 
 
 def connect(ssid: str, pwd: str):
