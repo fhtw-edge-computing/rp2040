@@ -138,7 +138,7 @@ async def cb_connect(receiver):
     pass
 
 
-async def cb_message(opcode, data, fin, sender, receivers):
+async def cb_message(msg, sender, receivers):
     pass
 
 
@@ -158,41 +158,6 @@ Sec-WebSocket-Accept: """ + key + b"\r\n\r\n"
 
 
 async def server_handshake(reader, writer, cb=cb_connect):
-
-    # Skip HTTP request line.
-    # req = await reader.readline()
-
-    # webkey = None
-    # upgrade = False
-    # websocket = False
-
-    # while True:
-    #     req = await reader.readline()
-    #     if not req:
-    #         return False
-    #     if req == b"\r\n":
-    #         break
-    #     header, value = [x.strip() for x in req.split(b":", 1)]
-    #     if DEBUG:
-    #         print((header, value))
-    #     if header == b"Sec-WebSocket-Key":
-    #         webkey = value
-    #     elif header == b"Connection" and b"Upgrade" in value:
-    #         upgrade = True
-    #     elif header == b"Upgrade" and value == b"websocket":
-    #         websocket = True
-
-    # if not (upgrade and websocket and webkey):
-    #     return False
-
-    # if DEBUG:
-    #     print(f"Sec-WebSocket-Key: {webkey} ({len(webkey)})")
-
-    # response_key = generate_response_key(webkey)
-    # response = generate_handshake_response(response_key)
-
-    # return True
-
     req = await reader.read(1024)
     request = parse_request(req)
     key = parse_websocket_request(request)
@@ -209,7 +174,8 @@ async def process_messages(reader, writer, cb=cb_message):
         data, opcode, fin = await receive_websocket_frame(reader)
         print("Message received!")
         if opcode == OPCODE_TEXT or opcode == OPCODE_BINARY:
-            await cb(opcode, data, fin, writer, clients)
+            msg = {"opcode": opcode, "data": data, "fin": fin}
+            await cb(msg, writer, clients)
         elif opcode == OPCODE_CLOSE:
             break
         elif opcode == OPCODE_PING:

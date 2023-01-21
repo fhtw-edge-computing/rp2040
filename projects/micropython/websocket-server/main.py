@@ -3,6 +3,7 @@ from uasyncio import run
 
 from wifi import connect
 from websocket import run_websocket_server, send_websocket_frame, OPCODE_TEXT, OPCODE_BINARY
+from sensors import read_sensors
 
 import ujson
 
@@ -10,21 +11,23 @@ argv.append("<<ssid>>")
 argv.append("<<pwd>>")
 
 
-async def onMessage(opcode, data, fin, sender, receivers):
-    if opcode == OPCODE_BINARY:
-        data = data.decode("utf-8")
+async def onMessage(msg, sender, receivers):
+    if msg["opcode"] == OPCODE_BINARY:
+        msg["data"] = msg["data"].decode("utf-8")
 
-    if (opcode == OPCODE_TEXT or opcode == OPCODE_BINARY):
-        print(f"Data received: {data}")
+    if (msg["opcode"] == OPCODE_TEXT or msg["opcode"] == OPCODE_BINARY):
+        print(f"Data received: {msg["data"]}")
 
     for receiver in receivers:
-        await send_websocket_frame(receiver, data, opcode, fin)
+        await send_websocket_frame(receiver, msg["data"], msg["opcode"], msg["fin"])
 
 
 async def onConnect(receiver):
     print(f"Connected! :)")
-    msg = {"text": "Hello Client!"}
-    await send_websocket_frame(receiver, ujson.dumps(msg), 0x1)
+    sensors = read_sensors()
+    await send_websocket_frame(receiver, ujson.dumps(sensors), 0x1)
+    # msg = {"text": "Hello Client!"}
+    # await send_websocket_frame(receiver, ujson.dumps(msg), 0x1)
 
 
 async def main():
