@@ -1,1 +1,0 @@
-import{_ as t,o as n,c as e,d as o}from"./app.0ac8f9fe.js";const h=JSON.parse('{"title":"Pinout","description":"","frontmatter":{},"headers":[],"relativePath":"guide/pinout.md","lastUpdated":1673883457000}'),a={name:"guide/pinout.md"},i=o("",2),r=[i];function c(d,s,u,p,_,l){return n(),e("div",null,r)}const g=t(a,[["render",c]]);export{h as __pageData,g as default};
